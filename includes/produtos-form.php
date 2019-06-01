@@ -13,30 +13,39 @@
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
+      <th scope="col">Description</th>
+      <th scope="col">Price</th>
+      <th scope="col">Picture</th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
+
+  <?php
+  
+  $sql = "SELECT * FROM tb_produtos";
+  $products = $pdo->query($sql);
+
+  while ($row = $products->fetch(PDO::FETCH_OBJ)) {
+
+    echo "<tr>";
+    echo "<th scope='row'>{$row->id_produto}</td>";
+    echo "<td>{$row->descricao}</td>";
+    echo "<td>{$row->valor}</td>";
+    echo "<td> <img src={$row->imagem} style='max-width:30%' alt='product photo'> </td>";
+    
+    echo "<td><form action='' method='POST' name='editProduct{$row->id_produto}'>
+    <input type='hidden' name='idProduct' value='{$row->id_produto}'>
+    <button class='btn' type='submit' name='editProduct'><i class='fas fa-edit'></i>edit</button>
+    </form>
+    <form action='' method='POST' name='deleteProduct{$row->id_produto}'>
+    <input type='hidden' name='idProduct' value='{$row->id_produto}'>
+    <button class='btn' type='submit' name='deleteProduct'><i class='fas fa-user-minus'></i>delete</button>
+    </form></td>";
+    echo "</tr>";
+  }
+ 
+  ?>
   </tbody>
 </table>
 

@@ -6,7 +6,19 @@
     <button type="submit" class="btn btn-info">Add Client</button>
  </form>
 
+<?php
+  try {
+    // $pdo = new PDO('mysql:host=localhost;dbname=db_abc_bolinhas', 'root', '', []);
+    $status = $pdo->getAttribute(PDO::ATTR_CONNECTION_STATUS);
+    // echo " pdo status -> $status";
+  } catch (PDOException $e) {
+    echo '<br><br><br>Erro ao conectar com o MySQL!!!<br><br>' . $e->getMessage();
+    exit();
+  }
+?>
+
  <form action="#" method="post" style="width: 100%">
+  
  <table class="table">
   <thead>
     <tr>
@@ -25,60 +37,42 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td> Endereço </td>
-      <td> Número </td>
-      <td> Obs </td>
-      <td> Cep </td>
-      <td> Bairro </td>
-      <td> Cidade </td>
-      <td> Estado </td>
-      <td> Telefone </td>
-      <td> Email </td>
-      <td> 
-        <input type="hidden" value="1" name="edit-client">
-        <button class="btn btn-success" type="submit">Editar</button> 
-    </td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td> Jacob </td>
-      <td> Endereço </td>
-      <td> Número </td>
-      <td> Obs </td>
-      <td> Cep </td>
-      <td> Bairro </td>
-      <td> Cidade </td>
-      <td> Estado </td>
-      <td> Telefone </td>
-      <td> Email </td>
-      <td> 
-        <input type="hidden" value="2" name="edit-client">
-        <button class="btn btn-success" type="submit">Editar</button> 
-      </td>
+  <?php
 
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td> Endereço </td>
-      <td> Número </td>
-      <td> Obs </td>
-      <td> Cep </td>
-      <td> Bairro </td>
-      <td> Cidade </td>
-      <td> Estado </td>
-      <td> Telefone </td>
-      <td> Email </td>
-      <td> 
-        <input type="hidden" value="3" name="edit-client">
-        <button class="btn btn-success" type="submit">Editar</button> 
-      </td>
+    
+    $sql = "SELECT * FROM tb_clientes";
+    $clients = $pdo->query($sql);
 
-    </tr>
+    while ($row = $clients->fetch(PDO::FETCH_OBJ)) {
+
+      echo "<tr>";
+      echo "<th scope='row'>{$row->id_cliente}</td>";
+      echo "<td>{$row->nome}</td>";
+      echo "<td>{$row->endereco}</td>";
+      echo "<td>{$row->numero}</td>";
+      echo "<td>{$row->observacao}</td>";
+      echo "<td>{$row->cep}</td>";
+      echo "<td>{$row->bairro}</td>";
+      echo "<td>{$row->cidade}</td>";
+      echo "<td>{$row->estado}</td>";
+      echo "<td>{$row->telefone}</td>";
+      echo "<td>{$row->email}</td>";
+      
+      echo "<td><form action='' method='POST' name='editClient{$row->id_cliente}'>
+      <input type='hidden' name='idClient' value='{$row->id_cliente}'>
+      <button class='btn' type='submit' name='editClient'><i class='fas fa-edit'></i>edit</button>
+      </form>
+      <form action='' method='POST' name='deleteClient{$row->id_cliente}'>
+      <input type='hidden' name='idClient' value='{$row->id_cliente}'>
+      <button class='btn' type='submit' name='deleteClient'><i class='fas fa-user-minus'></i>delete</button>
+      </form></td>";
+      echo "</tr>";
+    }
+   
+    ?>
+   
   </tbody>
+  
 </table>
 </form>
 </div>
